@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,9 +16,16 @@ import java.sql.ResultSet;
  */
 public class Consultas {
     
-    ResultSet resultado = null;
+    ResultSet resultado;
+    Connection conexion;
     
-    public void select(Connection conexion, String tabla)
+    public Consultas(Connection conexion)
+    {
+        this.conexion = conexion;
+        select("area");
+    }
+    
+    public void select(String tabla)
     {
         Statement consulta = null;
         
@@ -32,37 +40,49 @@ public class Consultas {
         }
     }
     
-    public void mostrar()
-    {        
+    public void settearColumnas(DefaultTableModel modelo)
+    {
         try 
         {
-            // Obtener la información de las columnas
-            int columnCount = resultado.getMetaData().getColumnCount();
+            // getMedaData devuelve un objeto ResultMetaData, en el cual las columnas empiezan con índice 1 
+            int numColumnas = resultado.getMetaData().getColumnCount();
+            
+            modelo.setColumnCount(numColumnas);
+            String [] nombreColumnas = new String[numColumnas];
 
-            // Mostrar los nombres de las columnas
-            for (int i = 1; i <= columnCount; i++) 
+            for (int i = 1; i <= numColumnas; i++) 
             {
-                System.out.print(resultado.getMetaData().getColumnName(i) + "\t");
+                nombreColumnas[i-1] = resultado.getMetaData().getColumnName(i); 
             }
-            System.out.println();
-
-            // Iterar a través del ResultSet y mostrar los resultados
+            
+            modelo.setColumnIdentifiers(nombreColumnas);
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+    }
+    
+    public void settearFilas(DefaultTableModel modelo)
+    {
+        try 
+        {
+            int numColumnas = modelo.getColumnCount();
+            String[] filaActual = new String[numColumnas];
+            // Iterar a través del ResultSet (next es false cuando ya no hay columnas)
             while (resultado.next()) 
             {
-                for (int i = 1; i <= columnCount; i++) 
+                for (int i = 1; i <= numColumnas; i++) 
                 {
-                    System.out.print(resultado.getString(i) + "\t");
+                    filaActual[i-1] = resultado.getString(i);
                 }
-                System.out.println();
+                
+                modelo.addRow(filaActual);
             }
         } 
-        catch (NullPointerException e) 
+        catch (SQLException e) 
         {
-            System.out.println("No se ha hecho una consulta previamente");
-        }
-        catch (SQLException e)
-        {
-            System.out.println("Ocurrió un error al leer el resultset");
-        }
+            System.out.println("SQLException: " + e.getMessage());
+        }   
     }
 }
