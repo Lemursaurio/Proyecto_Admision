@@ -12,8 +12,11 @@ import java.util.ArrayList;
  */
 public class Operaciones {
     
-    ArrayList<Rango> listRangos = new ArrayList<>();
-    ArrayList<Postulante> listPostulantes = new ArrayList<>();
+    final double puntajePos = 20.0;
+    final double puntajeNeg = 1.125; 
+    
+    ArrayList<Rango> listaRangos = new ArrayList<>();
+    ArrayList<Postulante> listaPostulantes = new ArrayList<>();
     Consultas cons;
 
     public Operaciones(Consultas cons) {
@@ -21,35 +24,85 @@ public class Operaciones {
     }    
     
     public void calcularResultados() {
+        // Iniciar timer
+        double tiempoInicio = System.nanoTime();
+        
         // Obtener datos de rango
         obtenerRangos();
         
         // Obtener datos de postulante
         obtenerPostulantes();
         
+        // Calcular nota
+        asignarNota();
         
+        // Mostrar postulantes
+        for (int i = 0 ; i < listaPostulantes.size() ; i++)
+        {
+            listaPostulantes.get(i).mostrarPostulante();
+        }
+        
+        // Tiempo total
+        double tiempoFinal = System.nanoTime();
+        
+        System.out.println("\nEl proceso tomó " + String.format("%.9f", (tiempoFinal - tiempoInicio)/1_000_000_000.0) + " segundos");
     }
     
     public void obtenerRangos() {
         cons.select("SELECT r.ran_iIndiceMinimo, r.ran_iIndiceMaximo, c.cla_vcRespuesta FROM rango r JOIN clave c USING (cla_iPosicion)", false);      
-        cons.llenarArrayList(listRangos, "rango");    
-        // Mostrar rangos
-        for (int i = 0 ; i < listRangos.size() ; i++)
-        {
-            listRangos.get(i).mostrarRango();
-        }
+        cons.llenarArrayList(listaRangos, "rango");    
     }
     
     public void obtenerPostulantes() {
         cons.select("SELECT p.cod_vcCodigo, p.esc_vcCodigo, r.ide_iIndice, r.res_vcRespuesta FROM postulante p JOIN identificacion USING (cod_vcCodigo) JOIN respuesta r USING (ide_iIndice)",
                     false);
-        cons.llenarArrayList(listPostulantes, "postulante");
-        // Mostrar postulantes
-        System.out.println();
-        for (int i = 0 ; i < listPostulantes.size() ; i++)
-        {
-            listPostulantes.get(i).mostrarPostulante();
-        }
+        cons.llenarArrayList(listaPostulantes, "postulante");
     }
     
+    public void asignarNota() {
+        String claveActual;
+        String respuestaActual;
+        double notaActual;
+        for (int i = 0 ; i < listaPostulantes.size() ; i++)
+        {
+            respuestaActual = listaPostulantes.get(i).getRespuestas();
+            // Buscar qué claves usar
+            claveActual = obtenerClave(listaPostulantes.get(i).getCodRespuesta());
+            // Comparar con respuestas de postulante
+            notaActual = calcularNota(claveActual, respuestaActual);
+            // Asignar nota
+            listaPostulantes.get(i).setNota(notaActual);
+        }      
+    }
+    
+    public String obtenerClave(int clave) {
+        String claveRes = "";
+        int rangoInf;
+        int rangoSup;
+        for (int i = 0 ; i < listaRangos.size() ; i++)
+        {
+            rangoInf = listaRangos.get(i).getInicio();
+            rangoSup = listaRangos.get(i).getFin();
+            
+            if (clave >= rangoInf && clave <= rangoSup) 
+            {
+                claveRes = listaRangos.get(i).getRespuesta();
+            }
+        }
+        return claveRes;
+    }
+    
+    public double calcularNota(String clave, String respuesta) {
+        double nota = 0;
+        for (int i = 0 ; i < clave.length() ; i++)
+        {
+            if (respuesta.charAt(i) == ' ')
+                nota += 0;          
+            else if (clave.charAt(i) == respuesta.charAt(i))
+                nota += puntajePos;
+            else
+                nota -= puntajeNeg;
+        } 
+        return nota;
+    }
 }

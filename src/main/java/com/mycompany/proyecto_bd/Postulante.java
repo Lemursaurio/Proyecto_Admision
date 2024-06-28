@@ -10,10 +10,11 @@ package com.mycompany.proyecto_bd;
  */
 public class Postulante {
     
-    int codPostulante;
-    int codEscuela;
-    int codRespuesta;
-    String respuestas;
+    private int codPostulante;
+    private int codEscuela;
+    private int codRespuesta;
+    private String respuestas;
+    private double nota;
 
     public Postulante(String... atributos) {
         this.codPostulante = Integer.parseInt(atributos[0]);
@@ -54,8 +55,16 @@ public class Postulante {
         this.respuestas = respuestas;
     }    
     
+    public double getNota() {
+        return nota;
+    }
+
+    public void setNota(double nota) {
+        this.nota = nota;
+    }
+    
     public void mostrarPostulante() {
-        System.out.println(this.codPostulante + "\t" + this.codEscuela + "\t" + this.codRespuesta + "\t" + this.respuestas);
+        System.out.println(this.codPostulante + "\t" + this.codEscuela + "\t" + this.codRespuesta + "\t" + this.respuestas + "\t" + this.nota);
     }
     
 }

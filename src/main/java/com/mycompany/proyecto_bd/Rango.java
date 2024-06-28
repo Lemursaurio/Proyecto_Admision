@@ -10,9 +10,9 @@ package com.mycompany.proyecto_bd;
  */
 public class Rango {
     
-    int inicio;
-    int fin;
-    String respuesta;
+    private int inicio;
+    private int fin;
+    private String respuesta;
 
     public Rango(String... atributos) {
         this.inicio = Integer.parseInt(atributos[0]);
