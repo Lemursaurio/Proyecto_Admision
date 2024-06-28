@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -19,20 +20,26 @@ public class Consultas {
     ResultSet resultado;
     Connection conexion;
     
-    public Consultas(Connection conexion)
-    {
+    public Consultas(Connection conexion) {
         this.conexion = conexion;
-        select("area");
+        select("area", true);
     }
     
-    public void select(String tabla)
-    {
+    public void select(String textoConsulta, boolean selectSimple) {
         Statement consulta = null;
         
         try 
         {
-            consulta = conexion.createStatement();
-            resultado = consulta.executeQuery("SELECT * FROM " + tabla);
+            if (selectSimple == true)
+            {
+                consulta = conexion.createStatement();
+                resultado = consulta.executeQuery("SELECT * FROM " + textoConsulta);
+            }
+            else
+            {
+                consulta = conexion.createStatement();
+                resultado = consulta.executeQuery(textoConsulta);
+            }
         } 
         catch (SQLException e) 
         {
@@ -40,8 +47,7 @@ public class Consultas {
         }
     }
     
-    public void settearColumnas(DefaultTableModel modelo)
-    {
+    public void settearColumnas(DefaultTableModel modelo) {
         try 
         {
             // getMedaData devuelve un objeto ResultMetaData, en el cual las columnas empiezan con índice 1 
@@ -63,8 +69,7 @@ public class Consultas {
         }
     }
     
-    public void settearFilas(DefaultTableModel modelo)
-    {
+    public void settearFilas(DefaultTableModel modelo) {
         try 
         {
             int numColumnas = modelo.getColumnCount();
@@ -85,4 +90,30 @@ public class Consultas {
             System.out.println("SQLException: " + e.getMessage());
         }   
     }
+    
+    public void llenarArrayList(ArrayList array, String tipo) {
+        try 
+        {
+            int numColumnas = resultado.getMetaData().getColumnCount();
+            String[] valAtributos = new String[numColumnas];
+
+            while (resultado.next()) 
+            {
+                for (int i = 1; i <= numColumnas; i++) 
+                {
+                    valAtributos[i-1] = resultado.getString(i);
+                }
+                
+                if (tipo.equals("rango"))
+                    array.add(new Rango(valAtributos));
+                else if (tipo.equals("postulante"))
+                    array.add(new Postulante(valAtributos));
+            }
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("SQLException: " + e.getMessage());
+        }   
+    }
+    
 }
