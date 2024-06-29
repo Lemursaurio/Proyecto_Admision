@@ -62,16 +62,18 @@ public class Operaciones {
     public void asignarNota() {
         String claveActual;
         String respuestaActual;
-        double notaActual;
+        double[] notasActual;
         for (int i = 0 ; i < listaPostulantes.size() ; i++)
         {
             respuestaActual = listaPostulantes.get(i).getRespuestas();
             // Buscar qué claves usar
             claveActual = obtenerClave(listaPostulantes.get(i).getCodRespuesta());
             // Comparar con respuestas de postulante
-            notaActual = calcularNota(claveActual, respuestaActual);
-            // Asignar nota
-            listaPostulantes.get(i).setNota(notaActual);
+            notasActual = calcularNota(claveActual, respuestaActual);
+            // Asignar notas
+            listaPostulantes.get(i).setNotaAptitud(notasActual[0]);
+            listaPostulantes.get(i).setNotaConocimientos(notasActual[1]);
+            listaPostulantes.get(i).setNotaFinal(notasActual[2]);
         }      
     }
     
@@ -92,17 +94,31 @@ public class Operaciones {
         return claveRes;
     }
     
-    public double calcularNota(String clave, String respuesta) {
-        double nota = 0;
-        for (int i = 0 ; i < clave.length() ; i++)
+    public double[] calcularNota(String clave, String respuesta) {
+        double[] notas = {0, 0, 0};
+        
+        // Sección Aptitud
+        for (int i = 0 ; i < clave.length() - 70 ; i++)
         {
             if (respuesta.charAt(i) == ' ')
-                nota += 0;          
+                notas[0] += 0;          
             else if (clave.charAt(i) == respuesta.charAt(i))
-                nota += puntajePos;
+                notas[0] += puntajePos;
             else
-                nota -= puntajeNeg;
+                notas[0] -= puntajeNeg;
         } 
-        return nota;
+        // Sección Conocimientos
+        for (int i = 30 ; i < clave.length() ; i++)
+        {
+            if (respuesta.charAt(i) == ' ')
+                notas[1] += 0;          
+            else if (clave.charAt(i) == respuesta.charAt(i))
+                notas[1] += puntajePos;
+            else
+                notas[1] -= puntajeNeg;
+        } 
+        // Total
+        notas[2] = notas[0] + notas[1];
+        return notas;
     }
 }

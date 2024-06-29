@@ -14,7 +14,9 @@ public class Postulante {
     private int codEscuela;
     private int codRespuesta;
     private String respuestas;
-    private double nota;
+    private double notaAptitud;
+    private double notaConocimientos;
+    private double notaFinal;
 
     public Postulante(String... atributos) {
         this.codPostulante = Integer.parseInt(atributos[0]);
@@ -54,17 +56,34 @@ public class Postulante {
     public void setRespuestas(String respuestas) {
         this.respuestas = respuestas;
     }    
-    
-    public double getNota() {
-        return nota;
+
+    public double getNotaAptitud() {
+        return notaAptitud;
     }
 
-    public void setNota(double nota) {
-        this.nota = nota;
+    public void setNotaAptitud(double notaAptitud) {
+        this.notaAptitud = notaAptitud;
+    }
+
+    public double getNotaConocimientos() {
+        return notaConocimientos;
+    }
+
+    public void setNotaConocimientos(double notaConocimientos) {
+        this.notaConocimientos = notaConocimientos;
+    }
+    
+    public double getNotaFinal() {
+        return notaFinal;
+    }
+
+    public void setNotaFinal(double nota) {
+        this.notaFinal = nota;
     }
     
     public void mostrarPostulante() {
-        System.out.println(this.codPostulante + "\t" + this.codEscuela + "\t" + this.codRespuesta + "\t" + this.respuestas + "\t" + this.nota);
+        System.out.println(this.codPostulante + "\t" + this.codEscuela + "\t" + this.codRespuesta + "\t" + this.respuestas 
+                           + "\t" + this.notaAptitud + "\t\t" + this.notaConocimientos +"\t\t" + this.notaFinal);
     }
     
 }
