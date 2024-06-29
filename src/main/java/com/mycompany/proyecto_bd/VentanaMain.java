@@ -27,7 +27,7 @@ public class VentanaMain extends javax.swing.JFrame {
 
     public DefaultTableModel crearModelo(String tabla)
     {
-        cons.select(tabla);
+        cons.select(tabla, true);
         DefaultTableModel modelo = new DefaultTableModel();
         cons.settearColumnas(modelo);
         cons.settearFilas(modelo);      
@@ -296,7 +296,8 @@ public class VentanaMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        System.out.println("Falta implementar XD");
+        Operaciones op = new Operaciones(cons);
+        op.calcularResultados();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
