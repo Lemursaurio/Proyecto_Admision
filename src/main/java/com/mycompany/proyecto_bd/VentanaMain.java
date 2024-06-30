@@ -296,7 +296,8 @@ public class VentanaMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Operaciones op = new Operaciones(cons);
+        //Operaciones op = new Operaciones(cons);
+        OperacionesParalela op = new OperacionesParalela(cons);
         op.calcularResultados();
     }//GEN-LAST:event_jButton1ActionPerformed
 

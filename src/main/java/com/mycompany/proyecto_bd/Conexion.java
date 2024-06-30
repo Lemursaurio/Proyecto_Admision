@@ -35,7 +35,7 @@ public class Conexion {
         
         String hostname = "localhost";
         String puerto = "3306";
-        String database = "admision_martes";
+        String database = "admision_miercoles";
         String url = "jdbc:mysql://" + hostname + ":" + puerto + "/" + database + "?userSSL=false";
         
         try
