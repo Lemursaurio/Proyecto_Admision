@@ -14,7 +14,8 @@ public class Proyecto_bd {
 
     public static void main(String[] args) {
         Connection con = Conexion.conexionMySQL();
-        Consultas cons = new Consultas(con);
-        VentanaMain admision = new VentanaMain(cons);
+        Consultas consA = new Consultas(con);
+        Consultas consB = new Consultas(con);
+        VentanaMain admision = new VentanaMain(consA, consB);
     }
 }

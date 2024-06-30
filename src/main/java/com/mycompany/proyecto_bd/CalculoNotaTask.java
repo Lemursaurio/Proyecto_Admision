@@ -8,7 +8,7 @@ import java.util.concurrent.RecursiveTask;
  * @author JeanSL
  */
 public class CalculoNotaTask extends RecursiveTask<Void>{
-    private static final int THRESHOLD = 14; // Umbral para dividir tareas
+    private static final int THRESHOLD = 4; // Umbral para dividir tareas
     private ArrayList<Postulante> postulantes;
     private final int start;
     private final int end;

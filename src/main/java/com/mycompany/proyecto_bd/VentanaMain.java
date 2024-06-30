@@ -12,14 +12,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class VentanaMain extends javax.swing.JFrame {
     
-    Consultas cons;
+    Consultas consA;
+    Consultas consB;
     
     /**
      * Creates new form VentanaMain
      * @param cons
      */
-    public VentanaMain(Consultas cons) {
-        this.cons = cons;
+    public VentanaMain(Consultas consA, Consultas consB) {
+        this.consA = consA;
+        this.consB = consB;
         initComponents();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -27,10 +29,10 @@ public class VentanaMain extends javax.swing.JFrame {
 
     public DefaultTableModel crearModelo(String tabla)
     {
-        cons.select(tabla, true);
+        consA.select(tabla, true);
         DefaultTableModel modelo = new DefaultTableModel();
-        cons.settearColumnas(modelo);
-        cons.settearFilas(modelo);      
+        consA.settearColumnas(modelo);
+        consA.settearFilas(modelo);      
         return modelo;
     }
     
@@ -297,7 +299,7 @@ public class VentanaMain extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //Operaciones op = new Operaciones(cons);
-        OperacionesParalela op = new OperacionesParalela(cons);
+        OperacionesParalela op = new OperacionesParalela(consA, consB);
         op.calcularResultados();
     }//GEN-LAST:event_jButton1ActionPerformed
 
