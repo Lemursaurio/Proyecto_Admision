@@ -47,7 +47,32 @@ public class Consultas {
         }
     }
     
+    public void insertarCalificaciones(ArrayList<Postulante> listaPostulantes) {
+        Statement consulta;
+        try 
+        {
+            // Eliminar filas anteriores
+            consulta = conexion.createStatement();
+            consulta.executeUpdate("TRUNCATE calificacion");
+            
+            // Insertar datos
+            for (int i = 0 ; i < listaPostulantes.size() ; i++)
+            {
+                Postulante postActual = listaPostulantes.get(i);
+                consulta.executeUpdate("INSERT INTO calificacion(ide_iIndice, cod_vcCodigo, cal_fNotaHabilidades, cal_fNotaConocimientos, cal_fNotaFinal) VALUES (" +
+                                        postActual.getCodRespuesta() + ", '" + postActual.getCodPostulante() + "', " + postActual.getNotaAptitud() + ", " +
+                                        postActual.getNotaConocimientos() + ", " + postActual.getNotaFinal() + ")");
+            }      
+        } 
+        catch (SQLException e) 
+        {
+            System.out.println("SQLException: " + e.getMessage());
+        }
+        System.out.println("Los datos se subieron correctamente");
+    }
+    
     public void settearColumnas(DefaultTableModel modelo) {
+        
         try 
         {
             // getMedaData devuelve un objeto ResultMetaData, en el cual las columnas empiezan con índice 1 

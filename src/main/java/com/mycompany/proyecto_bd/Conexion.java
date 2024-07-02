@@ -35,12 +35,12 @@ public class Conexion {
         
         String hostname = "localhost";
         String puerto = "3306";
-        String database = "admision_miercoles";
+        String database = "admision_martes";
         String url = "jdbc:mysql://" + hostname + ":" + puerto + "/" + database + "?userSSL=false";
         
         try
         {
-            conexion = DriverManager.getConnection(url, "root", "adminjs");
+            conexion = DriverManager.getConnection(url, "root", "root");
         }
         catch (SQLException e)
         {
