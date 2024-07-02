@@ -17,7 +17,8 @@ public class VentanaMain extends javax.swing.JFrame {
     
     /**
      * Creates new form VentanaMain
-     * @param cons
+     * @param consA
+     * @param consB
      */
     public VentanaMain(Consultas consA, Consultas consB) {
         this.consA = consA;

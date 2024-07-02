@@ -2,15 +2,14 @@ package com.mycompany.proyecto_bd;
 
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
-import java.util.concurrent.RecursiveTask;
 
 /**
  *
  * @author JeanSL
  */
 public class ObtenerPostulantesTask implements Callable<Void> {
-    private Consultas cons;
-    private ArrayList<Postulante> listaPostulantes;
+    private final Consultas cons;
+    private final ArrayList<Postulante> listaPostulantes;
 
     public ObtenerPostulantesTask(Consultas cons, ArrayList<Postulante> listaPostulantes) {
         this.cons = cons;

@@ -40,7 +40,7 @@ public class Conexion {
         
         try
         {
-            conexion = DriverManager.getConnection(url, "root", "root");
+            conexion = DriverManager.getConnection(url, "root", "adminjs");
         }
         catch (SQLException e)
         {
